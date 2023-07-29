@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+composer create-project laravel/laravel .
+npm update
+npm install
+npm run build
+php artisan serve --host=0.0.0.0 --port=$APP_PORT

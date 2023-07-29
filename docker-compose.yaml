@@ -1,0 +1,37 @@
+version: "3.0"
+services:
+  backend:
+    image: "build"
+    env_file:
+      - .env
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      args:
+        APP_NAME: ${APP_NAME}
+        APP_PORT: ${APP_PORT}
+        TZ: ${TZ}
+        NODE_VERSION: ${NODE_VERSION}
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    volumes:
+      - "../${APP_NAME}:/app"
+    
+    networks:
+      - servicesNetwork
+  dbserver:
+    image: mysql:5.7
+    ports:
+    - "3306:3306"
+    environment:
+    - MYSQL_ROOT_PASSWORD=rQ54NJFPjWUYBX6srVCM
+    - MYSQL_DATABASE=databaselocal
+    - MYSQL_USER=userdblocal
+    - MYSQL_PASSWORD=hvbvrtfKLYZaZemmX9FX
+    restart: unless-stopped
+    volumes:
+      - ./dbfiles:/var/lib/mysql
+    networks:
+      - servicesNetwork
+networks:
+  servicesNetwork:
