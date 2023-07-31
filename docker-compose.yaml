@@ -22,12 +22,13 @@ services:
   dbserver:
     image: mysql:5.7
     ports:
-    - "3306:3306"
+    - "${DB_SERVER_PORT}:${DB_SERVER_PORT}"
     environment:
-    - MYSQL_ROOT_PASSWORD=rQ54NJFPjWUYBX6srVCM
-    - MYSQL_DATABASE=databaselocal
-    - MYSQL_USER=userdblocal
-    - MYSQL_PASSWORD=hvbvrtfKLYZaZemmX9FX
+    - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    - MYSQL_DATABASE=${MYSQL_DATABASE}
+    - MYSQL_USER=${MYSQL_USER}
+    - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    - MYSQL_TCP_PORT=${DB_SERVER_PORT}
     restart: unless-stopped
     volumes:
       - ./dbfiles:/var/lib/mysql
