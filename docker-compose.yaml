@@ -12,6 +12,7 @@ services:
         APP_PORT: ${APP_PORT}
         TZ: ${TZ}
         NODE_VERSION: ${NODE_VERSION}
+        USERNAME: ${USERNAME}
     ports:
       - "${APP_PORT}:${APP_PORT}"
     volumes:
