@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
-composer create-project laravel/laravel .
-npm update
-npm install
-npm run build
+sudo composer create-project laravel/laravel .
+
+sudo npm update
+sudo npm install
+sudo npm run build
+
+sudo chown -R $USERNAME /app
+
 php artisan serve --host=0.0.0.0 --port=$APP_PORT
