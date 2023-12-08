@@ -1,7 +1,7 @@
 version: "3.0"
 services:
   backend:
-    image: "local_laravel"
+    image: "local_laravel10"
     env_file:
       - .env
     build:
@@ -12,8 +12,14 @@ services:
         APP_PORT: ${APP_PORT}
         TZ: ${TZ}
         NODE_VERSION: ${NODE_VERSION}
+        PHP_VERSION: ${PHP_VERSION}
+        UNAME: ${UNAME}
     ports:
       - "${APP_PORT}:${APP_PORT}"
+      - "2525:2525"
+#      - "9002:9002"
+    extra_hosts:
+      - host.docker.internal:host-gateway
     volumes:
       - "../${APP_NAME}:/app"
     
