@@ -1,5 +1,5 @@
 # Docker containers array for Laravel
-This image is intended to create a local Laravel environment for development (or production) and can be used either for a from-scratch project or to run an older Laravel project.
+This image is intended to create a local Laravel environment for development (only) and can be used either for a from-scratch project or to run an older Laravel project.
 
 ## Clean Installation
 - Create a project directory and clone the repository: 
@@ -18,15 +18,14 @@ docker compose up
 ```
 - Generated tree:
 ```txt
-|applicationName
-  |
-  |>docker-laravelbuilder
-     |- .env
-     |- Dockerfile
-     |- ... 
-  |>myapp
-     |- .env
-     |- <LaravelFiles>...
+═ applicationName
+  ╠ docker-laravelbuilder
+  ╚  ╦ .env
+     ╠ Dockerfile
+     ╠ ... 
+  ╚ myapp
+     ╠ .env
+     ╠ <LaravelFiles>...
 ```
 - Inside the new directory created by docker compose (myapp) you will find the project's files for Laravel including `.env` file for database and other environment variables.
 - Set database variables if needed.
@@ -53,10 +52,36 @@ If you want to load variables into `.env` Laravel file you can load them by `"${
 Building process only can be done with full `docker compose up --build`. It can not be done cleanly with `docker build .` because it brokes the environment variables load.
 
 ## About directories
-This repo creates a subdirectory called dbfiles to save database files for persistence. If you don't need such persistence, please comment lines into `docker-compose.yaml` file:
+- This repo can create a subdirectory called dbfiles to save database files for persistence. If you don't need such persistence, please comment lines into `docker-compose.yaml` file:
 ```
     volumes:
       - ./dbfiles:/var/lib/mysql
 ```
+- If you prefer, you can use a docker volume:
+```yaml
+    volumes:
+      - dockerVolDb:/var/lib/mysql
+volumes:
+   dockerVolDb:
+```
+- The project files will be created outside of this repo's files (to avoid conflicts with Laravel repo created) and will take the name from the Environment Variable called APP_NAME inside `.env` file
 
-The project files will be created outside of this repo's files (to avoid conflicts with Laravel repo created) and will take the name from the Environment Variable called APP_NAME inside `.env` file
+
+## First Scaffolding in local environment for dev or debug
+- For first scaffolding just build with `docker compose build --no-cache`.
+- Then `docker compose up` until docker creates all the files and run the built in server.
+- `CTRL + C` to stop the server, and `docker compose down`
+- Into `Dockerfile` uncomment the line `USER 1000:www-data`
+- Then re-run `docker compose build --no-cache`.
+- Run `docker compose up -d`.
+- Now you can edit your files directly from your app directory created.
+- Don't forget to add the DB configurations into `.env` file of your project.
+
+## For existing project
+- Place your Laravel files into application_name directory and uncomment the line `USER 1000:www-data` into `Dockerfile`. 
+- Then re-build with: `docker compose build --no-cache`
+- Run `docker compose up -d`.
+- Now you will be able to edit files from your app directory.
+- Don't forget to add the DB configurations into `.env` file of your project.
+
+_Note:_ If you don't uncomment line `USER 1000:www-data` into Dockerfile, you wont be able to edit files created inside the container unless you are specifically the root user.

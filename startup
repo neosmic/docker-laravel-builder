@@ -4,4 +4,9 @@ composer create-project laravel/laravel .
 npm update
 npm install
 npm run build
+
+if [ $(stat -c "%U" "artisan") = "root" ]; then
+    chown -R ${UNAME}:1000 .
+fi
+
 php artisan serve --host=0.0.0.0 --port=$APP_PORT
