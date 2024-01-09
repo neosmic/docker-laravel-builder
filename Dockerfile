@@ -26,7 +26,7 @@ RUN apt install -y php$PHP_VERSION \
     php$PHP_VERSION-common \ 
     php$PHP_VERSION-opcache \ 
     php$PHP_VERSION-mysql \ 
-    php$PHP_VERSION-mbstring \ 
+    php-mbstring \ 
     php$PHP_VERSION-zip \ 
     php$PHP_VERSION-fpm \ 
     php$PHP_VERSION-curl \ 
