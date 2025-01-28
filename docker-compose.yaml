@@ -17,7 +17,6 @@ services:
     ports:
       - "${APP_PORT}:${APP_PORT}"
       - "2525:2525"
-      - "9003:9003"
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:

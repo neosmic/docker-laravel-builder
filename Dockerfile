@@ -36,14 +36,12 @@ RUN apt install -y php$PHP_VERSION \
 # Xdebug
 RUN apt install php$PHP_VERSION-xdebug
 
-RUN echo "xdebug.mode=debug"  >> /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
+RUN echo "zend_extension=xdebug.so"  >> /etc/php/$PHP_VERSION/fpm/conf.d/20-xdebug.ini
+RUN echo "xdebug.mode=develop,debug"  >> /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
 RUN echo "xdebug.start_with_request=yes"  >> /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
 RUN echo "xdebug.client_host=host.docker.internal"  >> /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
-RUN echo "xdebug.remote_enable=off"  >> /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
-RUN echo "xdebug.discover_client_host=1"  >> /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
-RUN echo "xdebug.remote_port=9003"  >> /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
-
-EXPOSE 9003
+RUN echo "xdebug.discover_client_host=0"  >> /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
+RUN echo "xdebug.log_level=0" >> /etc/php/$PHP_VERSION/cli/conf.d/20-xdebug.ini
 
 RUN apt update
 RUN apt install -y composer
@@ -57,11 +55,13 @@ RUN mkdir -p /etc/apt/keyrings
 RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 ENV NODE_MAJOR=${NODE_VERSION}
 RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
-RUN apt update
+RUN apt-get update
 RUN apt install -y nodejs
 RUN apt autoremove
 RUN node --version
 RUN npm --version
+#RUN apt install php$PHP_VERSION-sqlite3
+#RUN sqlite3 --version
 
 # User permission
 RUN useradd -ms /bin/bash -g www-data ${UNAME}
