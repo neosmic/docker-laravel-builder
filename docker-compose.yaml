@@ -11,7 +11,6 @@ services:
         APP_NAME: ${APP_NAME}
         APP_PORT: ${APP_PORT}
         TZ: ${TZ}
-        NODE_VERSION: ${NODE_VERSION}
         PHP_VERSION: ${PHP_VERSION}
         UNAME: ${UNAME}
     ports:
@@ -20,12 +19,12 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
-      - "../${APP_NAME}:/app"
+      - "../${APP_NAME}:/var/www/html"
     
     networks:
       - servicesNetwork
   dbserver:
-    image: mysql:5.7
+    image: mysql:8.0
     ports:
     - "${DB_SERVER_PORT}:${DB_SERVER_PORT}"
     environment:
@@ -36,10 +35,10 @@ services:
     - MYSQL_TCP_PORT=${DB_SERVER_PORT}
     restart: unless-stopped
     volumes:
-      - db-test-volume:/var/lib/mysql
+      - db-test-volume26:/var/lib/mysql
     networks:
       - servicesNetwork
 networks:
   servicesNetwork:
 volumes:
-  db-test-volume:
+  db-test-volume26:
