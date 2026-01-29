@@ -9,4 +9,7 @@ if [ $(stat -c "%U" "artisan") = "root" ]; then
     chown -R ${UNAME}:1000 .
 fi
 
+composer update
+composer install
+php artisan key:generate
 php artisan serve --host=0.0.0.0 --port=$APP_PORT
